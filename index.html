@@ -200,6 +200,20 @@
   }
   .case-body p{ margin:0 0 14px; color:var(--ink-soft); max-width:52ch; }
 
+  .case-cover{
+  width:100%;
+  margin:0 0 80px;
+  border-radius:8px;
+  overflow:hidden;
+  }
+
+  .case-cover img{
+  width:100%;
+  height:auto;
+  display:block;
+  object-fit:cover;
+  }
+
   .case-visual{
     background:var(--paper-dim);
     border:1px solid var(--line);
@@ -448,6 +462,10 @@
       <article class="case" data-reveal>
         <div class="case-body">
           <p class="case-index">CASO — MOBILIDADE / CARSHARING · 2022</p>
+          
+          <div class="case-cover">
+            <img src="imagens/partilha/capa.png" alt="Capa do case Partilha">
+          </div>
           <h3 class="case-title">EasyMob</h3>
           <p>Projeto em equipe (com Guilherme Bruni e Luisa Vilaça), desenvolvido durante o curso UX Unicórnio: uma solução de carsharing para moradores de condomínios residenciais, endereçando o incômodo de manter um carro próprio sem abrir mão de mobilidade quando necessário.</p>
           <p>Conduzimos desk research, duas pesquisas quantitativas (mais de 100 respostas somadas) e entrevistas qualitativas com 6 potenciais usuários para validar hipóteses. A partir disso, construímos duas personas, mapas de jornada, benchmark com concorrentes diretos e indiretos, e priorizamos soluções com a técnica Como Poderíamos (How Might We).</p>
@@ -489,7 +507,7 @@
       <article class="case" data-reveal>
         <div class="case-body">
           <p class="case-index">CASO — TCC PÓS UX (PUCRS)</p>
-          <h3 class="case-title">Partilha <span style="font-family:'IBM Plex Mono',monospace; font-style:normal; font-size:0.42em; letter-spacing:0.08em; color:var(--slate); text-transform:uppercase; vertical-align:middle; margin-left:8px;">app de gestão de doações de alimentos</span></h3>
+          <h3 class="case-title">Partilha</h3>
           <p>Trabalho de conclusão da minha pós-graduação em User Experience Design and Beyond (PUCRS), a partir de um problema real da Coletivação — comunidade cristã inclusiva de Ceilândia (DF) da qual faço parte, que oferece café da manhã, banhos, roupas, itens de higiene, alimentos e apoio psicológico a pessoas em situação de vulnerabilidade. A gestão dessas doações dependia de cadernos e arquivos de Word, sem controle preciso de entrada, saída ou validade — o que gerava perdas e dificultava o planejamento das cestas básicas.</p>
           <p>Conduzi o UX de ponta a ponta: entrevistas semiestruturadas com três voluntárias da Coletivação, mapa de empatia, persona e jornada de usuário, wireframes de baixa e média fidelidade (ajustados a partir de feedback) e um protótipo navegável de alta fidelidade em Figma, com um design system próprio — tipografia Dosis e Open Sans, e uma lógica de cores para status de validade (verde, laranja, vermelho).</p>
           <p>Validei o fluxo principal (seleção e registro de doação) com um teste de usabilidade remoto via Maze, aplicado a 16 participantes reais ligados à Coletivação, com diferentes níveis de familiaridade digital.</p>
