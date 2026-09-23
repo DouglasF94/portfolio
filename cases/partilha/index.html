@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partilha — Case completo · Douglas Fernandes</title>
+<meta name="description" content="Detalhamento completo do case Partilha (TCC PUCRS): contexto da Coletivação, pesquisa, persona, wireframes, design system, protótipo e teste de usabilidade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,500;1,9..144,400;1,9..144,560&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F0; --paper-dim:#EAECE3; --line:#D9DCD1;
+    --ink:#10182B; --ink-soft:#3A4256; --cobalt:#2648FF; --cobalt-dim:#dbe1ff;
+    --slate:#6B7280; --signal:#FF3B30; --gap: clamp(1.25rem, 4vw, 3rem);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--cobalt); color:var(--paper); }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--cobalt); outline-offset:3px; }
+
+  .grid-backdrop{ position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px; opacity:0.5;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 95%); }
+
+  .wrap{ max-width:880px; margin:0 auto; padding-inline:var(--gap); position:relative; z-index:1; }
+
+  header.site-nav{ position:fixed; top:0; left:0; right:0; z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .nav-inner{ max-width:880px; margin:0 auto; padding:14px var(--gap); display:flex; align-items:center; justify-content:space-between; }
+  .back-link{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .back-link:hover{ color:var(--cobalt); }
+  .nav-mark{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); text-decoration:none; }
+
+  .hero{ padding:130px 0 56px; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cobalt); display:flex; align-items:center; gap:8px; }
+  .eyebrow::before{ content:""; width:16px; height:1px; background:var(--cobalt); display:inline-block; }
+  .hero-title{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(2.4rem, 6vw, 4rem); line-height:1; margin:16px 0 0; }
+  .hero-sub{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); margin-top:20px; max-width:640px; }
+
+  .spec-sheet{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .spec-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 16px; }
+  .spec-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-bottom:5px; }
+  .spec-value{ font-size:13.5px; }
+  @media (max-width:640px){ .spec-sheet{ grid-template-columns:repeat(2,1fr); } }
+
+  .stage{ padding:52px 0; border-top:1px solid var(--line); }
+  .stage-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .stage-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--cobalt); }
+  .stage h2{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.3rem,2.6vw,1.7rem); margin:0; }
+  .stage p{ color:var(--ink-soft); margin:0 0 14px; max-width:68ch; }
+  .stage ul{ color:var(--ink-soft); padding-left:20px; }
+  .stage ul li{ margin-bottom:6px; }
+
+  .case-link{
+    display:inline-block; margin-top:16px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--cobalt); text-decoration:none; border-bottom:1px solid var(--cobalt);
+  }
+  
+  .case-links{ display:flex; flex-wrap:wrap; gap:20px; margin-top:16px; }
+
+  .img-placeholder{
+    margin-top:18px; border:1.5px dashed var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    min-height:220px; padding:24px; color:var(--slate);
+  }
+  .img-placeholder .ph-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; max-width:44ch; line-height:1.6; }
+  .img-placeholder .ph-icon{ display:block; font-size:22px; margin-bottom:8px; opacity:0.6; }
+  .img-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+  .img-grid .img-placeholder{ margin-top:0; min-height:160px; }
+  @media (max-width:640px){ .img-grid{ grid-template-columns:1fr; } }
+
+  .callout{ margin-top:16px; padding:14px 16px; border-left:2px solid var(--cobalt); background:var(--cobalt-dim); }
+  .callout .oc-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cobalt); margin-bottom:4px; }
+  .callout .oc-value{ font-size:14.5px; }
+
+  .metric-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+  .metric{ border:1px solid var(--line); padding:12px 10px; text-align:center; }
+  .metric .m-value{ font-family:'IBM Plex Mono', monospace; font-size:18px; color:var(--cobalt); }
+  .metric .m-label{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--slate); letter-spacing:0.04em; margin-top:4px; }
+  @media (max-width:640px){ .metric-row{ grid-template-columns:repeat(2,1fr); } }
+
+  footer{ border-top:1px solid var(--line); padding:32px var(--gap) 56px; max-width:880px; margin:0 auto; position:relative; z-index:1;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); }
+</style>
+</head>
+<body>
+
+<div class="grid-backdrop" aria-hidden="true"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="back-link">← Portfólio</a>
+    <span class="nav-mark">D. FERNANDES</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="eyebrow">Caso — TCC Pós UX (PUCRS) · Coletivação</p>
+    <h1 class="hero-title">Partilha</h1>
+    <p class="hero-sub">Protótipo de solução para controle e gestão de doação de alimentos na Coletivação, uma comunidade cristã inclusiva de Ceilândia (DF).</p>
+
+    <a class="case-link" href="https://www.figma.com/proto/sYmxxDw6W4Vsl3dSHpmQSi/Coletiva%C3%A7%C3%A3o---Controle-e-Gest%C3%A3o-de-Doa%C3%A7%C3%A3o-de-Alimentos?node-id=63-135&t=Vn6r7iNjdW1dA0JK-1&scaling=scale-down&content-scaling=fixed&page-id=55%3A313&starting-point-node-id=63%3A171" target="_blank" rel="noopener">Ver protótipo navegável no Figma →</a>
+
+    <div class="spec-sheet">
+      <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX end-to-end (TCC)</div></div>
+      <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2024–2025</div></div>
+      <div class="spec-cell"><div class="spec-label">Orientadora</div><div class="spec-value">Profª Andrea Kozen</div></div>
+      <div class="spec-cell"><div class="spec-label">Status</div><div class="spec-value">Protótipo validado</div></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">01</span><h2>Contexto</h2></div>
+      <p>A Coletivação é uma comunidade cristã inclusiva fundada em 2016 em Ceilândia (DF), que oferece café da manhã comunitário, banhos, roupas, itens de higiene, alimentos e apoio psicológico a pessoas em situação de vulnerabilidade social. A gestão dessas doações — especialmente de alimentos — dependia de cadernos e arquivos de Word, sem controle preciso de entrada, saída ou validade, o que gerava risco de perdas e dificultava o planejamento das cestas básicas.</p>
+      <div class="img-placeholder">
+        <div><span class="ph-icon">📍</span><span class="ph-label">Fotos do espaço de armazenamento das doações ou do contexto da Coletivação</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">02</span><h2>Entrevistas com voluntárias</h2></div>
+      <p>Realizei três entrevistas semiestruturadas com voluntárias diretamente envolvidas na triagem e organização dos alimentos (Patrícia, assistente social; Luciana e Janaína, voluntárias), via Google Meet, transcritas com o auxílio do Tactiq. As entrevistas revelaram controle manual sem padronização, dificuldade em dimensionar cestas "no olho" e forte preferência por uma solução simples, acessível pelo celular.</p>
+      <div class="img-placeholder">
+        <div><span class="ph-icon">🎙️</span><span class="ph-label">Prints ou trechos das transcrições das entrevistas</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">03</span><h2>Mapa de empatia e persona</h2></div>
+      <p>A partir da escuta ativa, construí um mapa de empatia e uma persona-síntese, Maria de Lourdes, 45 anos, professora e voluntária há 3 anos — cujas dores incluíam frustração com a desorganização, cansaço físico e sentimento de impotência diante da falta de um sistema.</p>
+      <div class="img-grid">
+        <div class="img-placeholder"><span class="ph-label">Mapa de empatia</span></div>
+        <div class="img-placeholder"><span class="ph-label">Card da persona Maria de Lourdes</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">04</span><h2>Jornada e fluxo do usuário</h2></div>
+      <p>Mapeei a jornada da voluntária em quatro etapas — chegada à igreja, recebimento de doações, triagem e separação, registro e entrega — identificando obstáculos e oportunidades de melhoria em cada uma, antes de estruturar o fluxo de navegação da solução.</p>
+      <div class="img-grid">
+        <div class="img-placeholder"><span class="ph-label">Jornada do usuário</span></div>
+        <div class="img-placeholder"><span class="ph-label">Fluxo de navegação</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">05</span><h2>Wireframes</h2></div>
+      <p>Comecei com wireframes de baixa fidelidade (esboços em papel) para validar a lógica de navegação, depois evoluí para wireframes de média fidelidade — etapa em que ajustei, por exemplo, a posição do acesso ao perfil para o menu fixo inferior, seguindo boas práticas de uso com uma só mão em dispositivos móveis.</p>
+      <div class="img-grid">
+        <div class="img-placeholder"><span class="ph-label">Wireframes de baixa fidelidade (esboços em papel)</span></div>
+        <div class="img-placeholder"><span class="ph-label">Wireframes de média fidelidade</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">06</span><h2>Design system</h2></div>
+      <p>Defini uma paleta de cores, a combinação tipográfica Dosis (títulos) e Open Sans (corpo de texto) e uma lógica cromática para status de validade dos alimentos — verde para próprio para consumo, laranja para próximo do vencimento e vermelho para vencido — reunidos em um design system próprio para garantir consistência visual.</p>
+      <div class="img-grid">
+        <div class="img-placeholder"><span class="ph-label">Paleta de cores e tipografia</span></div>
+        <div class="img-placeholder"><span class="ph-label">Componentes do design system</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">07</span><h2>Protótipo de alta fidelidade</h2></div>
+      <p>Construí um protótipo navegável de alta fidelidade no Figma, cobrindo login/cadastro, visualização de estoque com filtros e categorias, registro de alimentos (manual ou por código de barras), cesto de doações, histórico de movimentações e notificações.</p>
+      <div class="img-placeholder">
+        <div><span class="ph-icon">🖥️</span><span class="ph-label">Prints das telas de alta fidelidade (home, estoque, registro, histórico)</span></div>
+      </div>
+      <p style="margin-top:14px;"><a href="https://www.figma.com/proto/sYmxxDw6W4Vsl3dSHpmQSi/Coletiva%C3%A7%C3%A3o---Controle-e-Gest%C3%A3o-de-Doa%C3%A7%C3%A3o-de-Alimentos?node-id=63-135&t=Vn6r7iNjdW1dA0JK-1&scaling=scale-down&content-scaling=fixed&page-id=55%3A313&starting-point-node-id=63%3A171" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--cobalt); border-bottom:1px solid var(--cobalt); text-decoration:none;">Ver protótipo navegável no Figma →</a></p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">08</span><h2>Teste de usabilidade</h2></div>
+      <p>Validei o fluxo principal (seleção e registro de doação de itens avulsos) com um teste remoto via Maze, aplicado a 16 participantes reais ligados à Coletivação, com diferentes níveis de familiaridade digital.</p>
+
+      <div class="metric-row">
+        <div class="metric"><div class="m-value">100%</div><div class="m-label">SUCESSO — TAREFA 1<br>ACESSAR ESTOQUE</div></div>
+        <div class="metric"><div class="m-value">94%</div><div class="m-label">RECONHECERAM<br>LÓGICA DE CORES</div></div>
+        <div class="metric"><div class="m-value">100%</div><div class="m-label">SUCESSO — TAREFA 3<br>SELECIONAR ITENS</div></div>
+        <div class="metric"><div class="m-value">100%</div><div class="m-label">SUCESSO — TAREFA 4<br>REGISTRAR DOAÇÃO</div></div>
+      </div>
+
+      <p>A tarefa de acessar o detalhamento de um item vencido teve 100% de sucesso, mas com a maior taxa de cliques equivocados (70,3%) — indício de que o ícone de informação usado não foi imediatamente reconhecido como clicável.</p>
+
+      <div class="img-grid">
+        <div class="img-placeholder"><span class="ph-label">Mapa de calor — Tarefa 1 (acessar estoque)</span></div>
+        <div class="img-placeholder"><span class="ph-label">Mapa de calor — Tarefa 5 (detalhamento de item)</span></div>
+      </div>
+
+      <div class="callout">
+        <div class="oc-label">Melhorias identificadas</div>
+        <div class="oc-value">Aumentar a área de clique do checkbox de seleção, mover a legenda de cores para o topo da tela e substituir o ícone "i" por um rótulo textual mais claro, como "ver detalhes".</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">09</span><h2>Aprendizados e próximos passos</h2></div>
+      <p>O protótipo atendeu à maior parte dos requisitos definidos para o MVP, com destaque para a eficiência do menu fixo inferior e da lógica de cores. Ficaram como trabalhos futuros: a integração entre o cadastro de beneficiários e o estoque, critérios nutricionais na montagem das cestas, e — caso a comunidade tenha interesse — a implementação real da solução na rotina da Coletivação, com testes em ambiente de uso.</p>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 Douglas Fernandes.</span>
+  <a href="../../index.html" class="back-link">← Voltar ao portfólio</a>
+</footer>
+
+</body>
+</html>

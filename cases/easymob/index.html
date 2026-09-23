@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyMob — Case completo · Douglas Fernandes</title>
+<meta name="description" content="Detalhamento completo do case EasyMob: contexto, pesquisa, personas, wireframes, protótipo e teste de usabilidade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,500;1,9..144,400;1,9..144,560&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F0; --paper-dim:#EAECE3; --line:#D9DCD1;
+    --ink:#10182B; --ink-soft:#3A4256; --cobalt:#2648FF; --cobalt-dim:#dbe1ff;
+    --slate:#6B7280; --signal:#FF3B30; --gap: clamp(1.25rem, 4vw, 3rem);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--cobalt); color:var(--paper); }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--cobalt); outline-offset:3px; }
+
+  .grid-backdrop{ position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px; opacity:0.5;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 95%); }
+
+  .wrap{ max-width:880px; margin:0 auto; padding-inline:var(--gap); position:relative; z-index:1; }
+
+  header.site-nav{ position:fixed; top:0; left:0; right:0; z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .nav-inner{ max-width:880px; margin:0 auto; padding:14px var(--gap); display:flex; align-items:center; justify-content:space-between; }
+  .back-link{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .back-link:hover{ color:var(--cobalt); }
+  .nav-mark{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); text-decoration:none; }
+
+  .hero{ padding:130px 0 56px; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cobalt); display:flex; align-items:center; gap:8px; }
+  .eyebrow::before{ content:""; width:16px; height:1px; background:var(--cobalt); display:inline-block; }
+  .hero-title{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(2.4rem, 6vw, 4rem); line-height:1; margin:16px 0 0; }
+  .hero-sub{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); margin-top:20px; max-width:640px; }
+
+  .spec-sheet{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .spec-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 16px; }
+  .spec-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-bottom:5px; }
+  .spec-value{ font-size:13.5px; }
+  @media (max-width:640px){ .spec-sheet{ grid-template-columns:repeat(2,1fr); } }
+
+  .stage{ padding:52px 0; border-top:1px solid var(--line); }
+  .stage-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .stage-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--cobalt); }
+  .stage h2{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.3rem,2.6vw,1.7rem); margin:0; }
+  .stage p{ color:var(--ink-soft); margin:0 0 14px; max-width:68ch; }
+  .stage ul{ color:var(--ink-soft); padding-left:20px; }
+  .stage ul li{ margin-bottom:6px; }
+
+  .case-link{
+    display:inline-block; margin-top:16px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--cobalt); text-decoration:none; border-bottom:1px solid var(--cobalt);
+  }
+  
+  .case-links{ display:flex; flex-wrap:wrap; gap:20px; margin-top:16px; }
+
+  .img-placeholder{
+    margin-top:18px; border:1.5px dashed var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    min-height:220px; padding:24px; color:var(--slate);
+  }
+  .img-placeholder .ph-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; max-width:44ch; line-height:1.6; }
+  .img-placeholder .ph-icon{ display:block; font-size:22px; margin-bottom:8px; opacity:0.6; }
+
+  .callout{ margin-top:16px; padding:14px 16px; border-left:2px solid var(--cobalt); background:var(--cobalt-dim); }
+  .callout .oc-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cobalt); margin-bottom:4px; }
+  .callout .oc-value{ font-size:14.5px; }
+
+  footer{ border-top:1px solid var(--line); padding:32px var(--gap) 56px; max-width:880px; margin:0 auto; position:relative; z-index:1;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); }
+</style>
+</head>
+<body>
+
+<div class="grid-backdrop" aria-hidden="true"></div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="back-link">← Portfólio</a>
+    <span class="nav-mark">D. FERNANDES</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="eyebrow">Caso — Mobilidade / Carsharing · 2022</p>
+    <h1 class="hero-title">EasyMob</h1>
+    <p class="hero-sub">Solução de carsharing para moradores de condomínios residenciais, desenvolvida em equipe durante o curso UX Unicórnio.</p>
+    
+    <a class="case-link" href="https://www.behance.net/gallery/141826805/EasyMob-Um-Estudo-de-Caso-UXUI" target="_blank" rel="noopener">Ver case completo no Behance →</a>
+    
+    <div class="spec-sheet">
+      <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX/UI Designer</div></div>
+      <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2022</div></div>
+      <div class="spec-cell"><div class="spec-label">Equipe</div><div class="spec-value">Douglas Fernandes, Guilherme Bruni, Luisa Vilaça</div></div>
+      <div class="spec-cell"><div class="spec-label">Ferramentas</div><div class="spec-value">Figma, Maze</div></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">01</span><h2>Contexto e problema</h2></div>
+      <p>O ponto de partida foi um incômodo comum a moradores de condomínios residenciais: manter um carro próprio tem um custo alto para um uso que muitas vezes é esporádico, mas abrir mão do carro também significa perder mobilidade quando ela é necessária. A proposta do EasyMob foi endereçar esse meio-termo com uma solução de carsharing pensada para esse contexto específico.</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">🖊️</span>
+          <span class="ph-label">Espaço para rabiscos iniciais, brainstorm ou anotações de definição do problema</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">02</span><h2>Pesquisa</h2></div>
+      <p>A equipe conduziu desk research, duas pesquisas quantitativas (mais de 100 respostas somadas) e entrevistas qualitativas com 6 potenciais usuários, além de um benchmark com concorrentes diretos e indiretos, para entender comportamentos reais de locação de veículos antes de desenhar qualquer tela.</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">📊</span>
+          <span class="ph-label">Prints dos formulários de pesquisa, roteiro de entrevistas ou principais achados do benchmark</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">03</span><h2>Personas e jornada</h2></div>
+      <p>A partir dos dados coletados, construímos duas personas e mapeamos suas jornadas, o que orientou a priorização de soluções com a técnica Como Poderíamos (How Might We).</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">👤</span>
+          <span class="ph-label">Cards de persona e mapa de jornada do usuário</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">04</span><h2>Wireframes</h2></div>
+      <p>O fluxo de consulta e cadastro foi estruturado primeiro em wireframes de baixa fidelidade, permitindo testar a lógica de navegação antes de investir em interface visual.</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">📐</span>
+          <span class="ph-label">Wireframes de baixa e/ou média fidelidade das telas principais</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">05</span><h2>Protótipo de alta fidelidade</h2></div>
+      <p>A interface final foi construída no Figma, aplicando a identidade visual definida para o produto sobre a estrutura já validada nos wireframes.</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">🖥️</span>
+          <span class="ph-label">Prints das telas de alta fidelidade (login, cadastro, home, etc.)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-num">06</span><h2>Teste de usabilidade</h2></div>
+      <p>Testamos o fluxo inicial de consulta e cadastro no Maze antes de avançar para a interface final. O teste revelou pontos de fricção reais, como baixa visibilidade da opção de consulta de condomínio e uma taxa de rejeição de quase 29% em uma das tarefas — dado que orientou os ajustes seguintes no fluxo.</p>
+      <div class="img-placeholder">
+        <div>
+          <span class="ph-icon">🔥</span>
+          <span class="ph-label">Prints dos resultados do Maze: taxas de sucesso, mapas de calor, fluxos de navegação</span>
+        </div>
+      </div>
+      <div class="callout">
+        <div class="oc-label">Aprendizado</div>
+        <div class="oc-value">O teste mostrou, com dados, onde o fluxo falhava — reforçando que decisões de UX devem vir de pesquisa, não de apego às primeiras ideias.</div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 Douglas Fernandes.</span>
+  <a href="../../index.html" class="back-link">← Voltar ao portfólio</a>
+</footer>
+
+</body>
+</html>
