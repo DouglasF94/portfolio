@@ -36,11 +36,113 @@
   .back-link:hover{ color:var(--cobalt); }
   .nav-mark{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); text-decoration:none; }
 
-  .hero{ padding:130px 0 56px; }
-  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cobalt); display:flex; align-items:center; gap:8px; }
-  .eyebrow::before{ content:""; width:16px; height:1px; background:var(--cobalt); display:inline-block; }
-  .hero-title{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(2.4rem, 6vw, 4rem); line-height:1; margin:16px 0 0; }
-  .hero-sub{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); margin-top:20px; max-width:640px; }
+  .hero{
+    position:relative;
+    min-height:620px;
+    padding:0;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    color:#fff;
+    background:var(--ink);
+  }
+
+  .hero-image{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:var(--ink);
+  }
+
+  .hero-image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .hero-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(16,24,43,.12) 0%, rgba(16,24,43,.18) 28%, rgba(16,24,43,.88) 100%),
+      linear-gradient(90deg, rgba(16,24,43,.58) 0%, rgba(16,24,43,.08) 65%, rgba(16,24,43,.18) 100%);
+  }
+
+  .hero .wrap{
+    width:100%;
+    padding-top:150px;
+    padding-bottom:54px;
+    position:relative;
+    z-index:1;
+  }
+
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .hero .eyebrow::before{
+    content:"";
+    width:16px;
+    height:1px;
+    background:#fff;
+    display:inline-block;
+  }
+
+  .hero-title{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(3.2rem, 8vw, 6.5rem);
+    line-height:.92;
+    margin:16px 0 0;
+    color:#fff;
+    text-shadow:0 2px 24px rgba(0,0,0,.18);
+  }
+
+  .hero-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:rgba(255,255,255,.86);
+    margin-top:22px;
+    max-width:640px;
+  }
+
+  .hero .case-link{
+    color:#fff;
+    border-bottom-color:#fff;
+  }
+
+  .hero .spec-sheet{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-cell{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-label{
+    color:rgba(255,255,255,.62);
+  }
+
+  .hero .spec-value{
+    color:#fff;
+  }
+
+  @media (max-width:640px){
+    .hero{ min-height:720px; }
+    .hero .wrap{ padding-top:120px; padding-bottom:32px; }
+    .hero .spec-sheet{ grid-template-columns:repeat(2,1fr); }
+  }
 
   .spec-sheet{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
   .spec-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 16px; }
@@ -101,18 +203,24 @@
 </header>
 
 <main>
-  <section class="hero wrap">
-    <p class="eyebrow">Caso — TCC Pós UX (PUCRS) · Coletivação</p>
+  <section class="hero">
+    <div class="hero-image" aria-hidden="true">
+      <img src="../../imagens/partilha/hero.jpg" alt="">
+    </div>
+
+    <div class="wrap">
+      <p class="eyebrow">Caso — TCC Pós UX (PUCRS) · Coletivação</p>
     <h1 class="hero-title">Partilha</h1>
     <p class="hero-sub">Protótipo de solução para controle e gestão de doação de alimentos na Coletivação, uma comunidade cristã inclusiva de Ceilândia (DF).</p>
 
     <a class="case-link" href="https://www.figma.com/proto/sYmxxDw6W4Vsl3dSHpmQSi/Coletiva%C3%A7%C3%A3o---Controle-e-Gest%C3%A3o-de-Doa%C3%A7%C3%A3o-de-Alimentos?node-id=63-135&t=Vn6r7iNjdW1dA0JK-1&scaling=scale-down&content-scaling=fixed&page-id=55%3A313&starting-point-node-id=63%3A171" target="_blank" rel="noopener">Ver protótipo navegável no Figma →</a>
 
-    <div class="spec-sheet">
-      <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX end-to-end (TCC)</div></div>
-      <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2024–2025</div></div>
-      <div class="spec-cell"><div class="spec-label">Orientadora</div><div class="spec-value">Profª Andrea Kozen</div></div>
-      <div class="spec-cell"><div class="spec-label">Status</div><div class="spec-value">Protótipo validado</div></div>
+      <div class="spec-sheet">
+        <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX end-to-end (TCC)</div></div>
+        <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2024–2025</div></div>
+        <div class="spec-cell"><div class="spec-label">Orientadora</div><div class="spec-value">Profª Andrea Kozen</div></div>
+        <div class="spec-cell"><div class="spec-label">Status</div><div class="spec-value">Protótipo validado</div></div>
+      </div>
     </div>
   </section>
 

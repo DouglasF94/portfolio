@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,500;1,9..144,400;1,9..144,560&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
+:root{
     --paper:#F4F5F0; --paper-dim:#EAECE3; --line:#D9DCD1;
     --ink:#10182B; --ink-soft:#3A4256; --cobalt:#2648FF; --cobalt-dim:#dbe1ff;
     --slate:#6B7280; --signal:#FF3B30; --gap: clamp(1.25rem, 4vw, 3rem);
@@ -36,11 +36,113 @@
   .back-link:hover{ color:var(--cobalt); }
   .nav-mark{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); text-decoration:none; }
 
-  .hero{ padding:130px 0 56px; }
-  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cobalt); display:flex; align-items:center; gap:8px; }
-  .eyebrow::before{ content:""; width:16px; height:1px; background:var(--cobalt); display:inline-block; }
-  .hero-title{ font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(2.4rem, 6vw, 4rem); line-height:1; margin:16px 0 0; }
-  .hero-sub{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft); margin-top:20px; max-width:640px; }
+  .hero{
+    position:relative;
+    min-height:620px;
+    padding:0;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    color:#fff;
+    background:var(--ink);
+  }
+
+  .hero-image{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:var(--ink);
+  }
+
+  .hero-image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .hero-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(16,24,43,.12) 0%, rgba(16,24,43,.18) 28%, rgba(16,24,43,.88) 100%),
+      linear-gradient(90deg, rgba(16,24,43,.58) 0%, rgba(16,24,43,.08) 65%, rgba(16,24,43,.18) 100%);
+  }
+
+  .hero .wrap{
+    width:100%;
+    padding-top:150px;
+    padding-bottom:54px;
+    position:relative;
+    z-index:1;
+  }
+
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .hero .eyebrow::before{
+    content:"";
+    width:16px;
+    height:1px;
+    background:#fff;
+    display:inline-block;
+  }
+
+  .hero-title{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(3.2rem, 8vw, 6.5rem);
+    line-height:.92;
+    margin:16px 0 0;
+    color:#fff;
+    text-shadow:0 2px 24px rgba(0,0,0,.18);
+  }
+
+  .hero-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:rgba(255,255,255,.86);
+    margin-top:22px;
+    max-width:640px;
+  }
+
+  .hero .case-link{
+    color:#fff;
+    border-bottom-color:#fff;
+  }
+
+  .hero .spec-sheet{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-cell{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-label{
+    color:rgba(255,255,255,.62);
+  }
+
+  .hero .spec-value{
+    color:#fff;
+  }
+
+  @media (max-width:640px){
+    .hero{ min-height:720px; }
+    .hero .wrap{ padding-top:120px; padding-bottom:32px; }
+    .hero .spec-sheet{ grid-template-columns:repeat(2,1fr); }
+  }
 
   .spec-sheet{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
   .spec-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 16px; }
@@ -71,10 +173,19 @@
   }
   .img-placeholder .ph-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; max-width:44ch; line-height:1.6; }
   .img-placeholder .ph-icon{ display:block; font-size:22px; margin-bottom:8px; opacity:0.6; }
+  .img-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+  .img-grid .img-placeholder{ margin-top:0; min-height:160px; }
+  @media (max-width:640px){ .img-grid{ grid-template-columns:1fr; } }
 
   .callout{ margin-top:16px; padding:14px 16px; border-left:2px solid var(--cobalt); background:var(--cobalt-dim); }
   .callout .oc-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cobalt); margin-bottom:4px; }
   .callout .oc-value{ font-size:14.5px; }
+
+  .metric-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+  .metric{ border:1px solid var(--line); padding:12px 10px; text-align:center; }
+  .metric .m-value{ font-family:'IBM Plex Mono', monospace; font-size:18px; color:var(--cobalt); }
+  .metric .m-label{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--slate); letter-spacing:0.04em; margin-top:4px; }
+  @media (max-width:640px){ .metric-row{ grid-template-columns:repeat(2,1fr); } }
 
   footer{ border-top:1px solid var(--line); padding:32px var(--gap) 56px; max-width:880px; margin:0 auto; position:relative; z-index:1;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); }
@@ -92,18 +203,25 @@
 </header>
 
 <main>
-  <section class="hero wrap">
-    <p class="eyebrow">Caso — Mobilidade / Carsharing · 2022</p>
+
+  <section class="hero">
+    <div class="hero-image" aria-hidden="true">
+      <img src="../../imagens/easymob/hero.jpg" alt="">
+    </div>
+
+    <div class="wrap">
+      <p class="eyebrow">Caso — MOBILIDADE / CARSHARING · 2022</p>
     <h1 class="hero-title">EasyMob</h1>
-    <p class="hero-sub">Solução de carsharing para moradores de condomínios residenciais, desenvolvida em equipe durante o curso UX Unicórnio.</p>
-    
+    <p class="hero-sub">Solução de carsharing para moradores de condomínios residenciais, desenvolvida em equipe durante o curso de formação em UX da UX Unicórnio (Leandro Rezende).</p>
+
     <a class="case-link" href="https://www.behance.net/gallery/141826805/EasyMob-Um-Estudo-de-Caso-UXUI" target="_blank" rel="noopener">Ver case completo no Behance →</a>
-    
-    <div class="spec-sheet">
-      <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX/UI Designer</div></div>
-      <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2022</div></div>
-      <div class="spec-cell"><div class="spec-label">Equipe</div><div class="spec-value">Douglas Fernandes, Guilherme Bruni, Luisa Vilaça</div></div>
-      <div class="spec-cell"><div class="spec-label">Ferramentas</div><div class="spec-value">Figma, Maze</div></div>
+
+      <div class="spec-sheet">
+        <div class="spec-cell"><div class="spec-label">Papel</div><div class="spec-value">UX/UI Designer</div></div>
+        <div class="spec-cell"><div class="spec-label">Período</div><div class="spec-value">2022</div></div>
+        <div class="spec-cell"><div class="spec-label">Equipe</div><div class="spec-value">Douglas Fernandes, Guilherme Bruni e Luisa Vilaça</div></div>
+        <div class="spec-cell"><div class="spec-label">Ferramentas</div><div class="spec-value">Figma, Maze</div></div>
+      </div>
     </div>
   </section>
 
