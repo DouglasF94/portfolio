@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexify — Case completo · Douglas Fernandes</title>
+<meta name="description" content="Nexify: estudo de caso fictício de uma plataforma de experiência do colaborador. Benchmarking, persona hipotética, wireframes, guia de estilo e protótipo responsivo em evolução.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,500;1,9..144,400;1,9..144,560&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F0; --paper-dim:#EAECE3; --line:#D9DCD1;
+    --ink:#10182B; --ink-soft:#3A4256; --cobalt:#2648FF; --cobalt-dim:#dbe1ff;
+    --slate:#6B7280; --signal:#FF3B30; --gap: clamp(1.25rem, 4vw, 3rem);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter', sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--cobalt); color:var(--paper); }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--cobalt); outline-offset:3px; }
+
+  .grid-backdrop{ position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px; opacity:0.5;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 95%); }
+
+  .wrap{ max-width:880px; margin:0 auto; padding-inline:var(--gap); position:relative; z-index:1; }
+
+  header.site-nav{ position:fixed; top:0; left:0; right:0; z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .nav-inner{ max-width:880px; margin:0 auto; padding:14px var(--gap); display:flex; align-items:center; justify-content:space-between; }
+  .back-link{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .back-link:hover{ color:var(--cobalt); }
+  .nav-mark{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate); text-decoration:none; }
+
+  .hero{
+    position:relative;
+    min-height:620px;
+    padding:0;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    color:#fff;
+    background:var(--ink);
+  }
+
+  .hero-image{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:var(--ink);
+  }
+
+  .hero-image img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .hero-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg, rgba(16,24,43,.12) 0%, rgba(16,24,43,.18) 28%, rgba(16,24,43,.88) 100%),
+      linear-gradient(90deg, rgba(16,24,43,.58) 0%, rgba(16,24,43,.08) 65%, rgba(16,24,43,.18) 100%);
+  }
+
+  .hero .wrap{
+    width:100%;
+    padding-top:150px;
+    padding-bottom:54px;
+    position:relative;
+    z-index:1;
+  }
+
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .hero .eyebrow::before{
+    content:"";
+    width:16px;
+    height:1px;
+    background:#fff;
+    display:inline-block;
+  }
+
+  .hero-title{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(3.2rem, 8vw, 6.5rem);
+    line-height:.92;
+    margin:16px 0 0;
+    color:#fff;
+    text-shadow:0 2px 24px rgba(0,0,0,.18);
+  }
+
+  .hero-sub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:rgba(255,255,255,.86);
+    margin-top:22px;
+    max-width:640px;
+  }
+
+  .hero .case-link{
+    color:#fff;
+    border-bottom-color:#fff;
+  }
+
+  .hero .spec-sheet{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-cell{
+    border-color:rgba(255,255,255,.28);
+  }
+
+  .hero .spec-label{
+    color:rgba(255,255,255,.62);
+  }
+
+  .hero .spec-value{
+    color:#fff;
+  }
+
+  @media (max-width:640px){
+    .hero{ min-height:720px; }
+    .hero .wrap{ padding-top:120px; padding-bottom:32px; }
+    .hero .spec-sheet{ grid-template-columns:repeat(2,1fr); }
+  }
+
+  .spec-sheet{ margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-left:1px solid var(--line); }
+  .spec-cell{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 16px; }
+  .spec-label{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-bottom:5px; }
+  .spec-value{ font-size:13.5px; }
+  @media (max-width:640px){ .spec-sheet{ grid-template-columns:repeat(2,1fr); } }
+
+  .stage{ padding:52px 0; border-top:1px solid var(--line); }
+  .stage-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .stage-num{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--cobalt); }
+  .stage h2{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(1.3rem,2.6vw,1.7rem); margin:0; }
+  .stage p{ color:var(--ink-soft); margin:0 0 14px; max-width:68ch; }
+  .stage ul{ color:var(--ink-soft); padding-left:20px; }
+  .stage ul li{ margin-bottom:6px; }
+
+  .case-link{
+    display:inline-block; margin-top:16px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--cobalt); text-decoration:none; border-bottom:1px solid var(--cobalt);
+  }
+  
+  .case-links{ display:flex; flex-wrap:wrap; gap:20px; margin-top:16px; }
+
+  .prototype-embed{
+    display:block; width:100%; height:760px; margin-top:18px;
+    border:1px solid var(--line); background:var(--paper-dim);
+  }
+  @media (max-width:640px){ .prototype-embed{ height:640px; } }
+
+  .img-placeholder{
+    margin-top:18px; border:1.5px dashed var(--line); background:var(--paper-dim);
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    min-height:220px; padding:24px; color:var(--slate);
+  }
+  .img-placeholder .ph-label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; max-width:44ch; line-height:1.6; }
+  .img-placeholder .ph-icon{ display:block; font-size:22px; margin-bottom:8px; opacity:0.6; }
+  .img-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+  .img-grid .img-placeholder{ margin-top:0; min-height:160px; }
+  @media (max-width:640px){ .img-grid{ grid-template-columns:1fr; } }
+
+  .callout{ margin-top:16px; padding:14px 16px; border-left:2px solid var(--cobalt); background:var(--cobalt-dim); }
+  .callout .oc-label{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cobalt); margin-bottom:4px; }
+  .callout .oc-value{ font-size:14.5px; }
+
+  .metric-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+  .metric{ border:1px solid var(--line); padding:12px 10px; text-align:center; }
+  .metric .m-value{ font-family:'IBM Plex Mono', monospace; font-size:18px; color:var(--cobalt); }
+  .metric .m-label{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--slate); letter-spacing:0.04em; margin-top:4px; }
+  @media (max-width:640px){ .metric-row{ grid-template-columns:repeat(2,1fr); } }
+
+  footer{ border-top:1px solid var(--line); padding:32px var(--gap) 56px; max-width:880px; margin:0 auto; position:relative; z-index:1;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate); }
+
+  .hero{background:radial-gradient(ellipse at 90% 0%,#483c92 0%,transparent 60%),#0b1120; min-height:540px;}
+  .hero-title{font-style:normal; letter-spacing:-.04em;}
+  .case-nav{display:flex; flex-wrap:wrap; gap:10px 20px; padding:26px 0; font-family:'IBM Plex Mono',monospace; font-size:12px;}
+  .case-nav a{text-underline-offset:5px;}
+  .stage{scroll-margin-top:75px;}
+  .cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:24px;}
+  .note-card{border:1px solid var(--line); padding:22px; background:var(--paper);}
+  .note-card h3{margin:0 0 10px; font-size:17px;}
+  .note-card p:last-child{margin-bottom:0;}
+  .research-table{width:100%; border-collapse:collapse; margin:24px 0; font-size:14px;}
+  .research-table th,.research-table td{text-align:left; vertical-align:top; padding:16px 12px; border-bottom:1px solid var(--line);}
+  .research-table th{color:var(--cobalt);}
+  figure{margin:24px 0;}
+  .wireframe{display:block; width:100%; height:auto; border:1px solid var(--line); background:#eee;}
+  figcaption{font-size:12px; color:var(--ink-soft); margin-top:10px; line-height:1.6;}
+  .wireframes{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px;}
+  .wireframes figure{margin:0;}
+  .wireframes a:focus-visible{outline:3px solid var(--cobalt);}
+  .flow{padding:0; list-style:none; counter-reset:flow; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px;}
+  .flow li{counter-increment:flow; border:1px solid var(--line); padding:16px; background:var(--paper); font-size:14px;}
+  .flow li::before{content:counter(flow,decimal-leading-zero) ' / '; color:var(--cobalt); font-family:monospace;}
+  .swatches{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:24px 0;}
+  .swatch{border:1px solid var(--line); background:var(--paper); padding:10px; font-size:12px;}
+  .swatch span{display:block; height:60px; background:var(--swatch); margin-bottom:10px;}
+  .style-sample{padding:24px; border:1px solid var(--line); background:#0b1120; color:#f1f5f9;}
+  .style-sample p{color:#f1f5f9;}
+  .status-list{display:flex; flex-wrap:wrap; gap:10px; margin:20px 0;}
+  .status-list span{padding:5px 12px; border-radius:20px; font-size:12px; background:#dbe1ff; color:#10182b;}
+  @media(max-width:640px){.cards,.wireframes{grid-template-columns:1fr;}.flow{grid-template-columns:1fr;}.research-table th,.research-table td{padding:12px 6px;}.swatches{grid-template-columns:repeat(2,minmax(0,1fr));}}
+</style>
+</head>
+<body>
+<div class="grid-backdrop" aria-hidden="true"></div>
+<header class="site-nav"><div class="nav-inner"><a href="../../index.html#trabalho" class="back-link">← Portfólio</a><span class="nav-mark">Nexify / UX·UI</span></div></header>
+<main>
+<section class="hero"><div class="wrap">
+<p class="eyebrow">Experiência do colaborador · Estudo de caso fictício</p>
+<h1 class="hero-title">Nexify</h1>
+<p class="hero-sub">O que preciso saber, fazer e acompanhar? Uma experiência para reunir comunicação, metas, pesquisas e desenvolvimento profissional.</p>
+<div class="spec-sheet">
+<div class="spec-cell"><div class="spec-label">Atuação</div><div class="spec-value">UX/UI Design</div></div>
+<div class="spec-cell"><div class="spec-label">Natureza</div><div class="spec-value">Projeto fictício</div></div>
+<div class="spec-cell"><div class="spec-label">Interface</div><div class="spec-value">Desktop e responsiva</div></div>
+<div class="spec-cell"><div class="spec-label">Status</div><div class="spec-value">Protótipo em evolução</div></div>
+</div></div></section>
+<div class="wrap">
+<nav class="case-nav" aria-label="Seções do case Nexify"><a href="#contexto">Contexto</a><a href="#pesquisa">Pesquisa</a><a href="#benchmarking">Benchmarking</a><a href="#persona">Persona</a><a href="#fluxo">Fluxo</a><a href="#wireframes">Wireframes</a><a href="#guia">Guia de estilo</a><a href="#prototipo">Protótipo</a><a href="#proximos-passos">Próximos passos</a></nav>
+<section class="stage" id="contexto"><div class="stage-head"><span class="stage-num">01</span><h2>Contexto e problema</h2></div>
+<p>A Nexify é uma organização fictícia que enfrenta dificuldades para comunicar informações importantes, acompanhar metas, facilitar a participação dos colaboradores em pesquisas e dar visibilidade ao desenvolvimento profissional.</p>
+<p>O objetivo do produto é centralizar informações e ações relevantes para que cada pessoa compreenda suas prioridades, acompanhe seu progresso e participe das iniciativas da organização.</p>
+<div class="callout"><div class="oc-label">Princípio de design</div><div class="oc-value">Clareza antes da complexidade.</div></div>
+<p style="margin-top:20px;">A proposta concentra a experiência em uma Home que ajuda a responder três perguntas: o que está acontecendo, o que precisa da minha atenção e como estou evoluindo.</p></section>
+<section class="stage" id="pesquisa"><div class="stage-head"><span class="stage-num">02</span><h2>Pesquisa exploratória e hipóteses</h2></div>
+<p>O ponto de partida foi a análise do problema, complementada por benchmarking de plataformas de experiência do colaborador e pela construção de uma persona hipotética. Essa base orientou a organização da informação e a definição do fluxo principal.</p>
+<div class="cards"><div class="note-card"><h3>Informação com prioridade</h3><p>A hipótese é que destacar pendências e prazos na Home ajuda a pessoa a identificar o que fazer primeiro.</p></div><div class="note-card"><h3>Progresso compreensível</h3><p>Indicadores visuais simples buscam tornar metas e desenvolvimento mais fáceis de acompanhar.</p></div></div>
+<p style="margin-top:20px;">Essas hipóteses ainda precisam ser confrontadas com o uso. Esta etapa não representa validação com colaboradores reais; os testes de usabilidade estão previstos para as próximas iterações.</p></section>
+<section class="stage" id="benchmarking"><div class="stage-head"><span class="stage-num">03</span><h2>Benchmarking: referências e decisões</h2></div>
+<p>Microsoft Viva, 15Five, Teamflect e Lattice compõem as referências do estudo. A síntese do benchmarking orienta a proposta da Nexify sem reproduzir toda a amplitude dessas plataformas.</p>
+<table class="research-table"><caption>Aprendizados do benchmarking aplicados à solução</caption><thead><tr><th scope="col">Aprendizado</th><th scope="col">Aplicação na Nexify</th></tr></thead><tbody>
+<tr><td>Reduzir a troca de contexto</td><td>Centralizar avisos, pendências, metas, pesquisas e desenvolvimento em uma porta de entrada comum.</td></tr>
+<tr><td>Escopo amplo aumenta a complexidade</td><td>Mostrar o essencial na Home e direcionar o aprofundamento para áreas específicas.</td></tr>
+<tr><td>Muitos módulos aumentam a carga cognitiva</td><td>Organizar a navegação em torno das necessidades do colaborador, evitando uma coleção de módulos independentes.</td></tr>
+<tr><td>Rotinas recorrentes devem ser rápidas</td><td>Dar acesso direto às pesquisas pendentes, com prazo e status visíveis.</td></tr>
+<tr><td>Metas precisam ser compreensíveis</td><td>Apresentar progresso de maneira visual e simples, sem exigir a interpretação de estruturas complexas de OKR.</td></tr>
+<tr><td>Integrações influenciam a experiência</td><td>Tratar integrações como oportunidade futura, sem depender de um ecossistema técnico específico no MVP.</td></tr>
+</tbody></table></section>
+<section class="stage" id="persona"><div class="stage-head"><span class="stage-num">04</span><h2>Persona hipotética</h2></div>
+<p>O colaborador da Nexify representa uma hipótese de público para orientar as decisões iniciais, e não uma persona validada por entrevistas.</p>
+<div class="cards"><div class="note-card"><h3>Objetivos</h3><ul><li>Saber o que acontece na organização.</li><li>Acompanhar metas e desenvolvimento profissional.</li><li>Participar das pesquisas.</li></ul></div><div class="note-card"><h3>Necessidades</h3><ul><li>Informação priorizada.</li><li>Acesso rápido às pendências.</li><li>Feedback visual de progresso.</li><li>Navegação simples.</li></ul></div><div class="note-card"><h3>Frustrações</h3><ul><li>Excesso de informações e prioridades pouco claras.</li><li>Perder prazos de pesquisas.</li><li>Dificuldade para acompanhar a própria evolução.</li></ul></div><div class="note-card"><h3>Direção para a experiência</h3><p>Dar visibilidade ao que exige ação e manter as informações de acompanhamento próximas, com caminhos claros para os detalhes.</p></div></div></section>
+<section class="stage" id="fluxo"><div class="stage-head"><span class="stage-num">05</span><h2>Arquitetura e fluxo principal</h2></div>
+<p>A navegação dos wireframes se organiza em Início, Metas, Pesquisas e Desenvolvimento. A Home reúne ações pendentes, progresso e avisos importantes.</p>
+<p>O fluxo detalhado acompanha uma pesquisa de clima: da descoberta da pendência à confirmação do envio e à atualização da Home.</p>
+<ol class="flow"><li>Login / SSO</li><li>Home: visualizar ações pendentes</li><li>Identificar a pesquisa e seu prazo</li><li>Abrir e iniciar a pesquisa</li><li>Responder às perguntas</li><li>Revisar as respostas</li><li>Enviar respostas</li><li>Receber confirmação</li><li>Voltar à Home com o status atualizado</li></ol>
+<div class="callout"><div class="oc-label">Fechar o ciclo</div><div class="oc-value">Confirmar o envio e remover a pendência torna visível que a ação foi concluída.</div></div></section>
+<section class="stage" id="wireframes"><div class="stage-head"><span class="stage-num">06</span><h2>Wireframes: da pendência à conclusão</h2></div>
+<p>As nove telas documentam a estrutura da experiência antes do acabamento visual. Selecione uma imagem para abri-la em tamanho original.</p>
+<div class="wireframes"><figure><a href="../../imagens/nexify/login.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/login.png" alt="Wireframe Nexify: 01 · Login" loading="lazy" width="1440" height="1024"></a><figcaption><strong>01 · Login</strong><br>Entrada com e-mail corporativo e senha.</figcaption></figure>
+<figure><a href="../../imagens/nexify/home.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/home.png" alt="Wireframe Nexify: 02 · Home" loading="lazy" width="1440" height="1024"></a><figcaption><strong>02 · Home</strong><br>Visão inicial com ações pendentes e indicadores.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-inicio.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-inicio.png" alt="Wireframe Nexify: 03 · Início da pesquisa" loading="lazy" width="1440" height="1024"></a><figcaption><strong>03 · Início da pesquisa</strong><br>Contextualização antes das perguntas.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-1.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-1.png" alt="Wireframe Nexify: 04 · Pesquisa — etapa 1" loading="lazy" width="1440" height="1247"></a><figcaption><strong>04 · Pesquisa — etapa 1</strong><br>Primeira etapa do preenchimento.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-2.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-2.png" alt="Wireframe Nexify: 05 · Pesquisa — etapa 2" loading="lazy" width="1440" height="1247"></a><figcaption><strong>05 · Pesquisa — etapa 2</strong><br>Continuação das perguntas.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-3.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-3.png" alt="Wireframe Nexify: 06 · Pesquisa — etapa 3" loading="lazy" width="1440" height="1247"></a><figcaption><strong>06 · Pesquisa — etapa 3</strong><br>Última etapa antes da revisão.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-revisao.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-revisao.png" alt="Wireframe Nexify: 07 · Revisão" loading="lazy" width="1440" height="1024"></a><figcaption><strong>07 · Revisão</strong><br>Conferência das respostas antes do envio.</figcaption></figure>
+<figure><a href="../../imagens/nexify/pesquisa-final.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/pesquisa-final.png" alt="Wireframe Nexify: 08 · Conclusão" loading="lazy" width="1440" height="1024"></a><figcaption><strong>08 · Conclusão</strong><br>Confirmação de pesquisa respondida.</figcaption></figure>
+<figure><a href="../../imagens/nexify/home-atualizada.png" target="_blank" rel="noopener"><img class="wireframe" src="../../imagens/nexify/home-atualizada.png" alt="Wireframe Nexify: 09 · Home atualizada" loading="lazy" width="1440" height="1024"></a><figcaption><strong>09 · Home atualizada</strong><br>Retorno à Home sem a pendência concluída.</figcaption></figure>
+</div></section>
+<section class="stage" id="guia"><div class="stage-head"><span class="stage-num">07</span><h2>Guia de estilo e componentes</h2></div>
+<p>A identidade da Nexify combina azul, roxo e verde, com tipografia DM Sans. O guia contempla variações da marca, área de proteção e ícone do aplicativo, além de paletas para modos claro e escuro.</p>
+<div class="swatches"><div class="swatch"><span style="--swatch:#1849FF" aria-hidden="true"></span><strong>Azul principal</strong><br>#1849FF</div><div class="swatch"><span style="--swatch:#8B5CF6" aria-hidden="true"></span><strong>Roxo</strong><br>#8B5CF6</div><div class="swatch"><span style="--swatch:#00C182" aria-hidden="true"></span><strong>Verde</strong><br>#00C182</div><div class="swatch"><span style="--swatch:#4EA8FF" aria-hidden="true"></span><strong>Azul claro</strong><br>#4EA8FF</div><div class="swatch"><span style="--swatch:#F9C8D6" aria-hidden="true"></span><strong>Sand Pink</strong><br>#F9C8D6</div><div class="swatch"><span style="--swatch:#FF9F68" aria-hidden="true"></span><strong>Peach Orange</strong><br>#FF9F68</div></div>
+<div class="cards"><div class="note-card"><h3>Tipografia e hierarquia</h3><p>DM Sans com variações de peso para títulos, corpo e legendas. A escala do guia parte de títulos de 32 px e corpo de 16 px.</p></div><div class="note-card"><h3>Espaçamento</h3><p>Uma base de 8 px orienta a organização dos elementos, com intervalos menores para detalhes e maiores para separar blocos de conteúdo.</p></div><div class="note-card"><h3>Componentes reutilizáveis</h3><p>Campos de texto e senha, seletores, botões, abas, caixas de seleção, alternância de tema, etiquetas e barras de progresso compõem a biblioteca visual.</p></div><div class="note-card"><h3>Estados de interface</h3><p>O guia prevê variações de foco, seleção e desabilitação. Cores de sucesso, aviso, erro e informação apoiam o feedback ao longo do fluxo.</p></div></div>
+<div class="status-list" aria-label="Exemplos de categorias previstas no guia"><span>Novo</span><span>Em andamento</span><span>Concluído</span><span>Urgente</span><span>Pesquisa</span><span>Meta</span></div>
+<p>Os componentes têm versões claras e escuras. Contraste, legibilidade e uso por teclado são pontos a verificar nas próximas avaliações, sem pressupor conformidade de acessibilidade já comprovada.</p></section>
+<section class="stage" id="prototipo"><div class="stage-head"><span class="stage-num">08</span><h2>Protótipo de alta fidelidade e versão responsiva</h2></div>
+<p>O protótipo navegável reúne a proposta visual e o fluxo de interação. O projeto também conta com uma versão responsiva, preparada para adaptar a experiência a diferentes tamanhos de tela.</p>
+<p>Explore o protótipo abaixo ou abra-o diretamente no Figma. O estudo segue em evolução e pode receber ajustes conforme novos testes forem realizados.</p>
+<iframe class="prototype-embed" title="Protótipo navegável de alta fidelidade do Nexify" src="https://www.figma.com/embed?embed_host=share&amp;url=https%3A%2F%2Fwww.figma.com%2Fproto%2FoZw6t1EjZANfxlvCk0E2Dc%2FNexify%3Fnode-id%3D32-15006%26p%3Df%26t%3DBLuK5K3aNn6uPQdU-1%26scaling%3Dmin-zoom%26content-scaling%3Dfixed%26page-id%3D14%253A1375" loading="lazy" allowfullscreen></iframe><p><a class="case-link" href="https://www.figma.com/proto/oZw6t1EjZANfxlvCk0E2Dc/Nexify?node-id=32-15006&amp;p=f&amp;t=BLuK5K3aNn6uPQdU-1&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;page-id=14%3A1375" target="_blank" rel="noopener">Abrir protótipo do Nexify no Figma →</a></p></section>
+<section class="stage" id="proximos-passos"><div class="stage-head"><span class="stage-num">09</span><h2>Próximos passos e evolução</h2></div>
+<p>O resultado desta etapa é uma proposta de experiência documentada, com wireframes, guia de estilo e protótipo navegável. Ainda não há resultados de testes de usabilidade nem métricas de impacto em produção.</p>
+<ul><li>Testar se as pessoas identificam a pesquisa pendente e compreendem seu prazo.</li><li>Observar o preenchimento, a revisão e o envio das respostas.</li><li>Verificar se a confirmação e a atualização da Home são percebidas.</li><li>Avaliar a navegação e a legibilidade na versão responsiva.</li><li>Revisar contraste, foco, estados de erro e consistência dos componentes.</li></ul>
+<div class="callout"><div class="oc-label">Aprendizado do processo</div><div class="oc-value">Centralizar informações exige também escolher o que ganha destaque. A Home organiza a proposta em torno de prioridades, ações e progresso; os próximos testes vão avaliar se essa hierarquia funciona para quem usa.</div></div>
+</section></div></main>
+<footer><span>Douglas Fernandes · Nexify</span><a class="back-link" href="../../index.html#trabalho">← Voltar ao portfólio</a></footer>
+</body></html>
