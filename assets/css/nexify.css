@@ -1,0 +1,67 @@
+/* Nexify artwork: the supplied logo is displayed intact, without reconstruction. */
+.nexify-surface {
+  --nexify-blue: #1849FF;
+  --nexify-purple: #8B5CF6;
+  --nexify-light-blue: #4EA8FF;
+  background:
+    radial-gradient(ellipse at 92% 0%, #8b5cf633, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, #1849ff26, transparent 60%),
+    #0B1120;
+  color: #F1F5F9;
+}
+.nexify-cover {
+  aspect-ratio: 16 / 9;
+  padding: clamp(24px, 5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid #4ea8ff40;
+  position: relative;
+  overflow: hidden;
+}
+.nexify-cover::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  width: 40%;
+  background: linear-gradient(90deg, var(--nexify-blue), var(--nexify-purple), #00CBEA);
+}
+.nexify-cover .nexify-cover-label {
+  color: #9ACFFF;
+  font-family: var(--font-label);
+  font-size: clamp(.625rem, 1.2vw, .75rem);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.nexify-cover .nexify-logo {
+  display: block;
+  width: min(100%, 620px);
+  height: auto;
+  object-fit: contain;
+  margin-block: 24px;
+}
+.nexify-cover .nexify-cover-caption {
+  color: #CBD5E1;
+  font-family: var(--font-body);
+  font-size: clamp(.875rem, 1.6vw, 1.25rem);
+  margin: 0;
+}
+.hero--nexify { min-height: 620px; }
+.hero--nexify .hero-title { margin: 32px 0 28px; line-height: 1; text-shadow: none; }
+.hero--nexify .nexify-logo { display: block; width: min(100%, 680px); height: auto; }
+.hero--nexify .hero-sub { max-width: 65ch; }
+.hero--nexify .hero-tagline { font-size: 1.25rem; color: #9ACFFF; margin: 0 0 14px; }
+.style-guide { margin: 28px 0; }
+.style-guide a { display: block; background: #000; border: 1px solid var(--line); }
+.style-guide img { display: block; width: 100%; height: auto; }
+.style-guide figcaption a { display: inline; background: none; border: 0; color: var(--cobalt); text-underline-offset: 3px; }
+@media (max-width: 640px) {
+  .hero--nexify { min-height: auto; }
+  .hero--nexify .wrap { padding-top: 110px; padding-bottom: 36px; }
+  .hero--nexify .hero-title { margin: 30px 0; }
+  .nexify-cover { aspect-ratio: auto; min-height: 220px; }
+}
