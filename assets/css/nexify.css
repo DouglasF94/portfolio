@@ -52,7 +52,7 @@
 }
 .hero--nexify { min-height: 620px; }
 .hero--nexify .hero-title { margin: 32px 0 28px; line-height: 1; text-shadow: none; }
-.hero--nexify .nexify-logo { display: block; width: min(100%, 680px); height: auto; }
+.hero--nexify .nexify-logo { display: block; width: min(100%, 280px); height: auto; }
 .hero--nexify .hero-sub { max-width: 65ch; }
 .hero--nexify .hero-tagline { font-size: 1.25rem; color: #9ACFFF; margin: 0 0 14px; }
 .style-guide { margin: 28px 0; }
