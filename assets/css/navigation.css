@@ -1,0 +1,21 @@
+/* Category labels stay consistent between navigation and section headings. */
+.nav-inner { gap:20px; }
+.portfolio-menu { min-width:0; }
+.nav-links { gap:24px; align-items:center; }
+.nav-links a { font-size:11px; letter-spacing:.055em; white-space:nowrap; }
+.nav-toggle { display:none; border:1px solid var(--line); background:var(--paper); color:var(--ink); padding:10px 14px; font:.75rem/1.6 var(--font-label); cursor:pointer; min-height:44px; }
+.nav-toggle span { margin-left:10px; }
+.category-intro { max-width:720px; margin:22px 0 0; color:var(--ink-soft); }
+#trabalho, #sites, #sobre, #contato { scroll-margin-top:80px; }
+@media(max-width:900px) {
+ .nav-inner { flex-wrap:wrap; padding-block:10px; gap:10px 16px; }
+ .nav-mark { font-size:11px; gap:7px; }
+ .portfolio-menu { width:100%; }
+ .nav-links { display:grid; grid-template-columns:1fr 1fr; gap:8px 16px; padding:12px 0; border-top:1px solid var(--line); }
+ .nav-links a { display:block; font-size:11px; padding:12px 0; white-space:normal; text-transform:none; letter-spacing:0; }
+ .nav-ready .nav-toggle { display:inline-flex; align-items:center; }
+ .nav-ready .portfolio-menu:not(.is-open) { display:none; }
+ .nav-links a::after { bottom:5px; }
+ #trabalho, #sites, #sobre, #contato { scroll-margin-top:90px; }
+}
+@media(min-width:901px) { .portfolio-menu { display:block!important; } }

@@ -385,6 +385,7 @@
 <link rel="stylesheet" href="assets/css/nexify.css">
 <link rel="stylesheet" href="assets/css/websites.css">
 <link rel="stylesheet" href="assets/css/hero.css">
+<link rel="stylesheet" href="assets/css/navigation.css">
 </head>
 <body>
 
@@ -404,12 +405,15 @@
       </svg>
       DOUGLAS FERNANDES
     </a>
+    <button class="nav-toggle" type="button" aria-controls="portfolio-menu" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button>
+    <nav id="portfolio-menu" class="portfolio-menu" aria-label="Navegação principal">
     <ul class="nav-links">
-      <li><a href="#trabalho" data-nav>Trabalho</a></li>
-      <li><a href="#sites" data-nav>Sites</a></li>
+      <li><a href="#trabalho" data-nav>Cases de UX/UI</a></li>
+      <li><a href="#sites" data-nav>Sites desenvolvidos</a></li>
       <li><a href="#sobre" data-nav>Sobre</a></li>
       <li><a href="#contato" data-nav>Contato</a></li>
     </ul>
+    </nav>
   </div>
 </header>
 
@@ -423,7 +427,7 @@
           <h1 class="hero-name"><span>Douglas</span><span>Fernandes<span class="hero-period">.</span></span></h1>
           <p class="hero-statement">Design visual, interfaces<br>e sites.</p>
           <p class="hero-role">Trabalho com design gráfico, interfaces e desenvolvimento de sites. Uso minha experiência em comunicação e tecnologia para desenhar, testar e implementar cada projeto.</p>
-          <div class="hero-actions"><a class="btn-primary" href="#trabalho">Explore meus projetos <span aria-hidden="true">↗</span></a><a class="hero-web-link" href="#sites">Veja os sites que desenvolvi <span aria-hidden="true">→</span></a></div>
+          <div class="hero-actions"><a class="btn-primary" href="#trabalho">Ver cases de UX/UI <span aria-hidden="true">↗</span></a><a class="hero-web-link" href="#sites">Ver sites desenvolvidos <span aria-hidden="true">→</span></a></div>
           <div class="hero-disciplines" aria-label="Áreas de atuação"><span>Design visual</span><span>UX/UI</span><span>Desenvolvimento web</span></div>
         </div>
         <figure class="hero-portrait">
@@ -454,11 +458,12 @@
     </div>
   </section>
 
-  <section id="trabalho">
+  <section id="trabalho" aria-labelledby="ux-cases-title">
     <div class="wrap">
       <div class="section-head" data-reveal>
-        <p class="eyebrow">Estudos de caso</p>
-        <h2 class="section-title">Problemas, hipóteses e processos de UX.</h2>
+        <p class="eyebrow">Pesquisa e design de interfaces</p>
+        <h2 class="section-title" id="ux-cases-title">Cases de UX/UI</h2>
+        <p class="category-intro">O processo de cada projeto: pesquisa, decisões de interface, protótipos e testes. O contexto e a minha participação estão descritos em cada case.</p>
       </div>
 
       <!-- CASE 1 · EasyMob -->
@@ -551,7 +556,7 @@
     <div class="wrap">
       <div class="section-head" data-reveal>
         <p class="eyebrow">Design + desenvolvimento web</p>
-        <h2 class="section-title" id="sites-title">Da primeira linha de código ao domínio publicado.</h2>
+        <h2 class="section-title" id="sites-title">Sites desenvolvidos</h2>
         <p class="sites-intro">Além de projetar interfaces, também desenvolvo sites com IA. Conheço HTML e CSS e uso essa base para revisar o código, implementar funcionalidades e ajustar o layout e os estilos. Também configurei os repositórios no GitHub, a hospedagem e os domínios, e cuido das atualizações dos projetos.</p>
       </div>
       <div class="web-workflow" data-reveal>
@@ -684,8 +689,9 @@
       const link = document.querySelector(`[data-nav][href="#${entry.target.id}"]`);
       if(!link) return;
       if(entry.isIntersecting){
-        navLinks.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(l => { l.classList.remove('active'); l.removeAttribute('aria-current'); });
         link.classList.add('active');
+        link.setAttribute('aria-current', 'location');
       }
     });
   }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
@@ -705,5 +711,6 @@
 </script>
 
 <script src="assets/js/galleries.js" defer></script>
+<script src="assets/js/navigation.js" defer></script>
 </body>
 </html>
