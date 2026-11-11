@@ -51,3 +51,5 @@
 }
 .hero-actions .btn-primary { background:var(--cobalt); color:#fff; border-color:var(--cobalt); }
 .hero-actions .btn-primary:hover { background:#3658ff; border-color:#3658ff; }
+/* Closer portrait framing is limited to the hero; About uses the original photo. */
+.hero-photo-frame img { transform:scale(1.24); transform-origin:50% 30%; }
